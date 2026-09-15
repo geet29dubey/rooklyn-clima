@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+*.tsbuildinfo
+.sites-runtime/
+qa/screenshots/
+/dist/
+.vinext/
+.wrangler/
