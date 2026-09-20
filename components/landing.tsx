@@ -1,7 +1,7 @@
 import { ArrowRight, Check, MessageSquare, SlidersHorizontal, Wrench, Layers3, CalendarDays, Workflow, ArrowDown, RotateCcw } from 'lucide-react';
 import { Logo } from './brand';
 import { Sections, Footer } from './sections';
-import { MobileMenu } from './interactions';
+import { CardMotion, MobileMenu } from './interactions';
 import { dictionaries } from '@/lib/dictionaries';
 import { lifecycle, navigationSections } from '@/lib/lifecycle';
 import type { Locale } from '@/lib/config';
@@ -37,7 +37,7 @@ export default function Landing({locale}: {locale: Locale}) {
     <header><div className="header-inner">
       <a href={`/${locale}/`} aria-label="Rooklyn"><Logo/><span className="brand-label">{d.label}</span></a>
       <nav aria-label={d.label}>{d.nav.map((label,i)=><a key={label} href={`#${navigationSections[i]}`}>{label}</a>)}</nav>
-      <div className="header-actions"><LanguageSelector locale={locale}/><DemoLink locale={locale} className="button header-cta">{l.headerCta}</DemoLink><MobileMenu locale={locale}/></div>
+      <div className="header-actions"><LanguageSelector locale={locale}/><DemoLink locale={locale} className="button header-cta">{l.headerCta}</DemoLink><ConsultButton locale={locale} className="button secondary header-contact">{d.want}</ConsultButton><MobileMenu locale={locale}/></div>
     </div></header>
     <main id="main">
       <section className="hero">
@@ -45,9 +45,10 @@ export default function Landing({locale}: {locale: Locale}) {
         <div className="container hero-grid">
           <div className="hero-copy">
             <div className="eyebrow"><span/>{d.eyebrow}</div>
-            <h1>{d.hero}</h1><p className="hero-lead">{d.heroLead}</p>
-            <ul className="hero-services">{l.microcopy.map(label=><li key={label}>{label}</li>)}</ul>
+            <h1>{d.hero}</h1>
             <div className="cta-row"><DemoLink locale={locale}>{d.demoCta}</DemoLink><ConsultButton locale={locale}>{d.want}</ConsultButton></div>
+            <p className="hero-lead">{d.heroLead}</p>
+            <ul className="hero-services">{l.microcopy.map(label=><li key={label}>{label}</li>)}</ul>
             <p className="hero-value">{l.heroValue}</p>
             <div className="trust">{d.trust.map(t=><span key={t}><Check size={13}/>{t}</span>)}</div>
           </div>
@@ -58,5 +59,6 @@ export default function Landing({locale}: {locale: Locale}) {
       <Sections locale={locale}/>
     </main>
     <Footer locale={locale}/>
+    <CardMotion/>
   </>;
 }

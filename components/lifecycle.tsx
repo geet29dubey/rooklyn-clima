@@ -1,3 +1,4 @@
+import { Logo } from './brand';
 import { ArrowRight, Check, MousePointer2, GitBranch, CalendarDays, FileClock, RotateCcw, UserRound, Layers3, Wrench, MessageCircle, Star, ShieldCheck } from 'lucide-react';
 import type { Locale } from '@/lib/config';
 import { lifecycle } from '@/lib/lifecycle';
@@ -66,7 +67,7 @@ export function ValueComparison({locale}:{locale:Locale}) {
   const l=lifecycle[locale];
   return <section className="section value-section" id="value"><div className="container">
     <SectionHead title={l.comparisonTitle} lead={l.comparisonLead}/>
-    <div className="value-grid"><div className="basic-value"><CalendarDays size={23}/><h3>{l.basicLabel}</h3><ul>{l.basicFeatures.map(f=><li key={f}><Check size={15}/>{f}</li>)}</ul></div><div className="rooklyn-value"><div className="value-heading"><span className="logo">rooklyn<span className="logo-dot">.</span></span><span>{l.rooklynLabel}</span></div><ul>{l.valueFeatures.map(f=><li key={f}><Check size={15}/>{f}</li>)}</ul></div></div>
+    <div className="value-grid"><div className="basic-value"><CalendarDays size={23}/><h3>{l.basicLabel}</h3><ul>{l.basicFeatures.map(f=><li key={f}><Check size={15}/>{f}</li>)}</ul></div><div className="rooklyn-value"><div className="value-heading"><Logo/><span>{l.rooklynLabel}</span></div><ul>{l.valueFeatures.map(f=><li key={f}><Check size={15}/>{f}</li>)}</ul></div></div>
     <p className="scope-note">{l.scopeNote}</p>
   </div></section>;
 }

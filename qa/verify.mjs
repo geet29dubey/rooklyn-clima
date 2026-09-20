@@ -13,6 +13,22 @@ const {config,externalUrl,locales}=load('lib/config.ts');
 const {content}=load('lib/content.ts');
 const {dictionaries}=load('lib/dictionaries.ts');
 const {lifecycle}=load('lib/lifecycle.ts');
+const {assessmentForms, contactCopy, isAssessmentSubmission}=load('lib/contact.ts');
+for(const locale of locales){
+  const id=`inline-${assessmentForms[locale].id}`;
+  assert.equal(isAssessmentSubmission(['set-sticky-contacts',`embedded_iframe_${id}`,id],id),true);
+  for(const invalid of [null,{},['iframeLoaded'],['set-sticky-contacts','_ud','{}'],['set-sticky-contacts','embedded_iframe_other','other'],['set-sticky-contacts',`embedded_iframe_${id}`,'other']])assert.equal(isAssessmentSubmission(invalid,id),false);
+  const html=fs.readFileSync(`out/${locale}/index.html`,'utf8');
+  assert.ok(html.includes(`data-form-id="${assessmentForms[locale].id}"`));
+  assert.ok(html.includes('id="contact"'));
+  assert.ok(!html.includes('id="demo"'));
+  assert.ok(!html.includes('href="#demo"')&&!html.includes('href="#undefined"'));
+  assert.ok(html.includes(`href="/${locale}/#contact"`));
+  const thanks=fs.readFileSync(`out/${locale}/thank-you/index.html`,'utf8');
+  assert.ok(thanks.includes(contactCopy[locale].thanks));
+  assert.ok(thanks.includes('noindex'));
+}
+console.log('PASS localized inline contact forms, contact navigation, thank-you routes and success-message filtering');
 function structure(value){if(Array.isArray(value))return value.map(structure);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([k,v])=>[k,structure(v)]));assert.equal(typeof value,'string');assert.ok(value.length>0);return 'string'}
 for (const locale of locales) {
   assert.deepEqual(structure(lifecycle[locale]), structure(lifecycle.es));

@@ -7,11 +7,11 @@ export const lifecycle = {
       seoTitle: 'CRM y automatización para empresas de climatización | Rooklyn Clima',
       seoDescription: 'Rooklyn Clima conecta solicitudes, reservas de reparación e instalación, seguimiento de presupuestos, historial de equipos, mantenimiento y reactivación de clientes.',
       label: 'El ciclo de cliente de tu empresa de climatización',
-      nav: ['Cómo funciona', 'Soluciones', 'Ciclo de cliente', 'Caso de negocio', 'Demo'],
+      nav: ['Cómo funciona', 'Soluciones', 'Ciclo de cliente', 'Caso de negocio'],
       eyebrow: 'Automatización comercial para climatización',
       hero: 'Convierte más solicitudes en trabajos agendados y clientes puntuales en ingresos recurrentes.',
       heroLead: 'Rooklyn conecta solicitudes, reservas, seguimiento, historial de equipos y recordatorios de mantenimiento en un recorrido automatizado para empresas de climatización.',
-      demoCta: 'Ver la demo de climatización', want: 'Hablar con Rooklyn',
+      demoCta: 'Ver la demo de climatización', want: 'Contacta con nosotros',
       strip: ['Captar', 'Convertir', 'Atender', 'Fidelizar', 'Reactivar'],
     },
     microcopy: ['Reparación', 'Instalación', 'Mantenimiento', 'Sustitución'],
@@ -79,10 +79,10 @@ export const lifecycle = {
     header:{
       seoTitle:'HVAC CRM & Automation for Service Businesses | Rooklyn Clima',
       seoDescription:'Rooklyn Clima helps HVAC businesses manage enquiries, repair and installation bookings, estimate follow-up, equipment records, maintenance recalls and customer reactivation.',
-      label:'The connected HVAC customer lifecycle',nav:['How it works','Solutions','Lifecycle','Business case','Demo'],
+      label:'The connected HVAC customer lifecycle',nav:['How it works','Solutions','Lifecycle','Business case'],
       eyebrow:'HVAC Revenue Automation',hero:'Turn more HVAC enquiries into booked jobs — and one-time customers into recurring revenue.',
       heroLead:'Rooklyn connects enquiries, service booking, follow-ups, equipment history and maintenance recalls in one automated customer journey for HVAC businesses.',
-      demoCta:'See the HVAC demo',want:'Talk to Rooklyn',strip:['Capture','Convert','Serve','Retain','Reactivate'],
+      demoCta:'See the HVAC demo',want:'Contact us',strip:['Capture','Convert','Serve','Retain','Reactivate'],
     },
     microcopy:['Repair','Installation','Maintenance','Replacement'],heroValue:'Built for HVAC service businesses. Designed for European customer journeys.',positioning:'From first enquiry to the next service.',headerCta:'See demo',
     diagramTail:['Equipment history','Next service recall','Replacement opportunity'],diagramLabels:{maintenance:'Maintenance',job:'Job completed',jobSub:'Booking, service and follow-up',equipment:'Equipment and customer relationship',equipmentSub:'History, next service and future opportunities'},
@@ -111,7 +111,7 @@ export const lifecycle = {
   },
   it: {
     header:{
-      seoTitle:'CRM e automazione per aziende di climatizzazione | Rooklyn Clima',seoDescription:'Rooklyn Clima collega richieste, prenotazioni di riparazioni e installazioni, follow-up dei preventivi, storico degli impianti, richiami manutenzione e riattivazione dei clienti.',label:'Il ciclo cliente per le aziende di climatizzazione',nav:['Come funziona','Soluzioni','Ciclo cliente','Caso aziendale','Demo'],eyebrow:'Automazione commerciale per la climatizzazione',hero:'Trasforma più richieste in interventi prenotati e i clienti occasionali in ricavi ricorrenti.',heroLead:'Rooklyn collega richieste, prenotazioni, follow-up, storico degli impianti e richiami manutenzione in un unico percorso automatizzato per le aziende di climatizzazione.',demoCta:'Guarda la demo climatizzazione',want:'Parla con Rooklyn',strip:['Acquisire','Convertire','Servire','Fidelizzare','Riattivare'],
+      seoTitle:'CRM e automazione per aziende di climatizzazione | Rooklyn Clima',seoDescription:'Rooklyn Clima collega richieste, prenotazioni di riparazioni e installazioni, follow-up dei preventivi, storico degli impianti, richiami manutenzione e riattivazione dei clienti.',label:'Il ciclo cliente per le aziende di climatizzazione',nav:['Come funziona','Soluzioni','Ciclo cliente','Caso aziendale'],eyebrow:'Automazione commerciale per la climatizzazione',hero:'Trasforma più richieste in interventi prenotati e i clienti occasionali in ricavi ricorrenti.',heroLead:'Rooklyn collega richieste, prenotazioni, follow-up, storico degli impianti e richiami manutenzione in un unico percorso automatizzato per le aziende di climatizzazione.',demoCta:'Guarda la demo climatizzazione',want:'Contattaci',strip:['Acquisire','Convertire','Servire','Fidelizzare','Riattivare'],
     },
     microcopy:['Riparazione','Installazione','Manutenzione','Sostituzione'],heroValue:'Per le aziende di servizi di climatizzazione. Pensato per l’esperienza del cliente europeo.',positioning:'Dal primo contatto al prossimo intervento.',headerCta:'Guarda la demo',diagramTail:['Storico dell’impianto','Richiamo manutenzione','Opportunità di sostituzione'],diagramLabels:{maintenance:'Manutenzione',job:'Intervento completato',jobSub:'Prenotazione, servizio e follow-up',equipment:'Impianto e relazione con il cliente',equipmentSub:'Storico, prossimi interventi e nuove opportunità'},
     page:{
@@ -138,4 +138,4 @@ export const lifecycle = {
   },
 } satisfies Record<Locale, unknown>;
 
-export const navigationSections = ['process', 'solution', 'lifecycle', 'impact', 'demo'];
+export const navigationSections = ['process', 'solution', 'lifecycle', 'impact'];

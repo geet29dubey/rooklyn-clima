@@ -33,7 +33,7 @@ This delivery is prepared for deployment only. No DNS or custom-domain publishin
 
 The established Next.js components, visual identity and interactions are retained. The page now connects capture, qualification, booking, estimate follow-up, equipment records, maintenance and reactivation. The five capability panels, four-stage process, equipment record, replacement example, maintenance timeline and three business examples share translated content in `lib/lifecycle.ts`. Supporting layouts live in `components/lifecycle.tsx` and `app/lifecycle.css`.
 
-The Carlos García equipment record, Vaillant replacement candidate, maintenance timeline and €6,500 estimate are clearly labelled illustrations. They do not represent customer data, measured revenue or a guaranteed outcome. Technical replacement decisions remain with the HVAC business. The existing external demo links cover repair and installation; optional WhatsApp/assistant integrations and the other lifecycle examples are not presented as live demo functionality.
+The Carlos García equipment record, Vaillant replacement candidate, maintenance timeline and €6,500 estimate are clearly labelled illustrations. They do not represent customer data, measured revenue or a guaranteed outcome. Technical replacement decisions remain with the HVAC business. All demo calls to action lead to aureaclima.rooklyn.co; optional WhatsApp/assistant integrations and the other lifecycle examples are not presented as live demo functionality.
 
 ## Values required before launch
 
@@ -41,24 +41,24 @@ Copy `.env.example` to `.env.local`, enter verified values, and rebuild after ch
 
 | Value | Location |
 | --- | --- |
-| Rooklyn logo | Replace the temporary text mark in `components/brand.tsx` and update `public/favicon.svg` if appropriate. |
-| GHL form embed URL | `NEXT_PUBLIC_GHL_FORM_EMBED_URL`, read only through `config.ghlFormEmbedUrl` in `lib/config.ts`. |
-| Consultation calendar URL | `NEXT_PUBLIC_CONSULTATION_CALENDAR_URL`. A link appears inside the consultation modal when supplied. |
-| GHL External Tracking snippet | `NEXT_PUBLIC_GHL_TRACKING_SCRIPT_URL` plus the verified script attributes, adapter, cleanup and success-message matcher in `lib/tracking-config.ts`. |
+| Rooklyn logo | Shared rook emblem and gold wordmark in `components/brand.tsx` and `public/favicon.svg`, recreated as vectors from the supplied reference. |
+| Localized assessment forms | Exact English, Spanish and Italian form IDs and embed heights in `lib/contact.ts`. The legacy single-form environment variable does not override these. |
+| Contact section | Contact and assessment actions link to `/{locale}/#contact`. |
+| GHL External Tracking snippet | `NEXT_PUBLIC_GHL_TRACKING_SCRIPT_URL` plus the verified script attributes, adapter and cleanup in `lib/tracking-config.ts`. |
 | Privacy Policy URL | `NEXT_PUBLIC_PRIVACY_URL`. |
 | Cookie Policy URL | `NEXT_PUBLIC_COOKIE_URL`. |
 | Legal Notice URL | `NEXT_PUBLIC_LEGAL_URL`. |
 | Contact email | `NEXT_PUBLIC_CONTACT_EMAIL`. Omitted until provided. |
 
-Legal controls open an honest pending-information dialog until their URLs are provided. They do not link to fabricated policies. The consultation placeholder displays the required field layout in a disabled fieldset, explains availability, and provides a working free-demo link. It cannot collect, store, send or simulate submitting any form data. No local backend or submission endpoint exists.
+Legal controls retain the pending-information dialog until their URLs are provided.
 
 ## GHL form integration
 
-The supplied assessment form (`uwp62aex2J0loVy7nxpZ`) is configured as the default and in the local `.env` through `NEXT_PUBLIC_GHL_FORM_EMBED_URL`. Talk to Rooklyn and the existing assessment buttons open it inside the existing native dialog. The supplied GHL `form_embed.js` helper loads on the first consultation opening. The iframe uses `INLINE` layout inside that dialog, preserving the supplied cookie-consent attributes; its original automatic popup trigger and hidden style are intentionally omitted so it does not open on page load or create a second popup. The iframe is removed on close, and Next.js loads the helper only once. The existing dialog styling, close controls, language/UTM forwarding and consent-gated site analytics are retained.
+The inline contact section embeds the supplied form for the selected language: EN `FCNLI4nmuarnHRxtPVWi`, ES `uwp62aex2J0loVy7nxpZ`, IT `3txWuv6hLddQ9Gxy9pFe`. Contact actions scroll to this section. The two adjacent links open the HVAC demo and Rooklyn website. The GHL helper handles responsive iframe sizing; the embed retains the supplied cookie-consent attributes and forwards only language and UTM parameters. Field labels, validation and internal form typography remain controlled in GHL.
 
-Enter the actual HTTPS embed URL once in the environment setting above. That switches the placeholder to the GHL iframe; no invented ID is used. The iframe is only mounted when the visitor opens the consultation dialog and is removed when closed. It receives `lang` plus all current `utm_*` parameters. The fallback link opens the same GHL form if embedding is unavailable. Ensure the provider permits this site in its frame policy.
+Successful submissions redirect to `/en/thank-you/`, `/es/thank-you/` or `/it/thank-you/`. The listener validates the GHL origin, exact iframe window and form-specific `set-sticky-contacts` message emitted by the provider's successful submission handler (verified against its public client bundle on 2026-09-20). Load events and generic contact-sync messages do not redirect. No contact values are read or included in analytics. Thank-you pages are excluded from search indexing. The external fallback opens GHL directly and follows the provider's own success behavior.
 
-Configure these fields in GHL: name, company, work email or WhatsApp, primary problem dropdown (missed calls, slow response, scheduling, estimate follow-up, maintenance recalls, other), and privacy consent. The complete translated labels, options, consent and validation text are in `lib/content.ts`. Configure required-field, valid email/international phone and consent validation in GHL. Confirm that the actual embed honours `lang` in all three languages; if it needs a different locale mechanism, adapt the single embed URL builder. Set translated success and error messages there too. Do not enable non-essential GHL embed tracking before analytics consent; verify the supplied embed's cookie behaviour before launch. Submission and calendar availability cannot be tested until those integrations are supplied.
+Run `node qa/contact-events.mjs` to verify the redirect boundary without submitting a real lead. The production export checks include all three forms and thank-you pages. A live submission was not made during implementation.
 
 ## Tracking and consent
 
@@ -68,7 +68,7 @@ Tracking is inert until affirmative consent and a real adapter are configured. T
 
 Implement `trackingConfig.dispose` to stop the real integration and remove its documented cookies/storage when consent is withdrawn. The page also removes its script and reloads after revocation to stop already-loaded script execution. A GHL script must not be configured until its cleanup and consent behaviour have been verified.
 
-Implement `trackingConfig.matchSubmission` only after inspecting the actual GHL success-message contract; it must match a verified successful submission for the supplied form ID. The listener also requires both the configured iframe's window and exact origin. Never count opening or clicking the form as a submitted lead. The matcher is intentionally null until the integration exists.
+Submission tracking is handled by the verified inline-form listener in `components/contact.tsx` and remains subject to analytics consent. The legacy `trackingConfig.matchSubmission` hook is no longer used.
 
 The cookie banner offers equally prominent necessary-only and analytics choices, with an unchecked optional-analytics preference. Preferences can always be reopened in the footer. Language and consent are stored locally; consent expires after 180 days. No analytics script, network event or iframe loads before consent/opening. The page-view event is emitted when analytics consent is first granted; prior interactions are not replayed. The business-case event fires once on visibility when consent is present.
 
