@@ -36,7 +36,7 @@
     "enabled": false
   }
 }
-
+/*old wrangler*/
 /* {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "rooklyn-clima",
