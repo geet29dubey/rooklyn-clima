@@ -23,7 +23,7 @@ pnpm verify
 pnpm start
 ```
 
-The build creates `out/`. Deploy that complete directory to a static host. Route `/es/`, `/en/` and `/it/` to their `index.html`; serve `out/404.html` for missing paths with HTTP 404 status. Do not configure a single-page catch-all to `index.html`. `/` redirects in the browser to the saved language, defaulting to Spanish, and includes language links without JavaScript. Each language page is fully rendered without JavaScript. The global 404 uses the URL locale or saved language on hydration, with Spanish as its static fallback.
+The build creates `out/`. Deploy that complete directory to a static host. Route `/es/`, `/en/` and `/it/` and their policy/thank-you paths to their `index.html`; serve `out/404.html` for missing paths with HTTP 404 status. Do not configure a single-page catch-all to `index.html`. `/` redirects in the browser to the saved language, defaulting to English, and includes language links without JavaScript. Each language page is fully rendered without JavaScript. The global 404 uses the URL locale or saved language on hydration, with English as its static fallback.
 
 This delivery is prepared for deployment only. No DNS or custom-domain publishing has been performed. Publish `clima.rooklyn.co` only after the owner's approval. `robots.txt`, canonical URLs, hreflang, sitemap and Open Graph metadata use `NEXT_PUBLIC_SITE_URL`. No social image was supplied or requested, so no image URL is fabricated.
 
@@ -45,12 +45,12 @@ Copy `.env.example` to `.env.local`, enter verified values, and rebuild after ch
 | Localized assessment forms | Exact English, Spanish and Italian form IDs and embed heights in `lib/contact.ts`. The legacy single-form environment variable does not override these. |
 | Contact section | Contact and assessment actions link to `/{locale}/#contact`. |
 | GHL External Tracking snippet | `NEXT_PUBLIC_GHL_TRACKING_SCRIPT_URL` plus the verified script attributes, adapter and cleanup in `lib/tracking-config.ts`. |
-| Privacy Policy URL | `NEXT_PUBLIC_PRIVACY_URL`. |
-| Cookie Policy URL | `NEXT_PUBLIC_COOKIE_URL`. |
-| Legal Notice URL | `NEXT_PUBLIC_LEGAL_URL`. |
+| Privacy policy | `/{locale}/privacy/`, supplied text in `lib/policies/`. |
+| Cookie policy | `/{locale}/cookies/`, supplied text in `lib/policies/`. |
+| Legal notice | `/{locale}/legal/`, supplied text in `lib/policies/`. |
 | Contact email | `NEXT_PUBLIC_CONTACT_EMAIL`. Omitted until provided. |
 
-Legal controls retain the pending-information dialog until their URLs are provided.
+Footer and cookie-banner policy links open the local document in the current language. The supplied Spanish documents dated 21 September 2026 are preserved as structured content, with English and Italian translations. All three use NIF/NIE Z0680759X, confirmed by the owner on 24 September 2026. Original source files are unchanged. The old optional external policy URL variables are no longer used by these links.
 
 ## GHL form integration
 
@@ -70,7 +70,7 @@ Implement `trackingConfig.dispose` to stop the real integration and remove its d
 
 Submission tracking is handled by the verified inline-form listener in `components/contact.tsx` and remains subject to analytics consent. The legacy `trackingConfig.matchSubmission` hook is no longer used.
 
-The cookie banner offers equally prominent necessary-only and analytics choices, with an unchecked optional-analytics preference. Preferences can always be reopened in the footer. Language and consent are stored locally; consent expires after 180 days. No analytics script, network event or iframe loads before consent/opening. The page-view event is emitted when analytics consent is first granted; prior interactions are not replayed. The business-case event fires once on visibility when consent is present.
+The cookie banner offers equally prominent necessary-only and analytics choices, with an unchecked optional-analytics preference. Preferences can always be reopened in the footer. Language and consent are stored locally; consent expires after 180 days. Optional analytics scripts and events remain gated by consent. The inline GHL form loads separately and retains its supplied provider cookie-consent attributes. The page-view event is emitted when analytics consent is first granted; prior interactions are not replayed. The business-case event fires once on visibility when consent is present.
 
 ## URL and language behaviour
 
@@ -78,7 +78,13 @@ Every demo link opens in the same tab and is built from a single central destina
 
 ## Accessibility and content
 
-Semantic sections, heading hierarchy, native select/accordion/dialog controls, focus outlines, skip link, reduced-motion support and a mobile CTA with reserved footer space. Native modal behaviour traps focus, supports Escape and restores focus to its opener. All main content is Server Component rendered. There are no fake clients, testimonials, statistics, fixed implementation promises, financial calculators or fabricated contractor details. WhatsApp and virtual-assistant integration is always optional. Deliverables are presented as possible scope, not a universal package.
+Semantic sections, heading hierarchy, native accordion/dialog controls, focus outlines, skip link, reduced-motion support and a mobile CTA with reserved bottom space. The language disclosure supports mouse hover, touch/click, ArrowDown, Tab and Escape, and preserves the current page, query and section. Native modal behaviour traps focus, supports Escape and restores focus to its opener. All main content is Server Component rendered. There are no fake clients, testimonials, statistics, fixed implementation promises, financial calculators or fabricated contractor details. WhatsApp and virtual-assistant integration is always optional. Deliverables are presented as possible scope, not a universal package.
+
+## Responsive and policy verification
+
+`app/responsive.css` refines the existing styles at mobile (<768px), tablet (768–1023px), compact desktop (1024–1279px) and larger desktop widths. The header remains in normal flow with sticky positioning. Mobile navigation contains the contact action; the compact mobile demo CTA respects safe-area insets and hides when the footer enters view. Policy pages omit that sales CTA and the sales-page view event.
+
+After building, run `node qa/verify.mjs`, `node qa/contact-events.mjs` and `node qa/policies-and-language.mjs`. The last check covers all nine policy routes, translation block/table coverage, footer links, the confirmed identifier and default-language behavior. No lint script or linter is configured. See `qa/RESPONSIVE-2026-09-24.md` for the responsive browser audit.
 
 See `qa/REPORT.md` for verification and remaining launch dependencies.
 

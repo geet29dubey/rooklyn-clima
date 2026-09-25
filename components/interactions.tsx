@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import { X, ShieldCheck, ArrowRight, Menu } from 'lucide-react';
-import { config, externalUrl, type Locale } from '@/lib/config';
+import { type Locale } from '@/lib/config';
 import { dictionaries } from '@/lib/dictionaries';
 import { content } from '@/lib/content';
 import { navigationSections } from '@/lib/lifecycle';
@@ -9,22 +9,23 @@ import { consentKey, disableTracking, enableTracking, hasConsent, track } from '
 import { trackingConfig } from '@/lib/tracking-config';
 import { ConsultButton, DemoLink } from './actions';
 export function MobileMenu({locale}:{locale:Locale}){const [open,setOpen]=useState(false);const d=dictionaries[locale];return <div className="mobile-menu"><button className="icon-button" aria-label={open?d.close:d.menu} aria-expanded={open} aria-controls="mobile-nav" onClick={()=>setOpen(!open)}>{open?<X size={21}/>:<Menu size={21}/>}</button>{open&&<nav id="mobile-nav" aria-label={d.label}>{d.nav.map((n,i)=><a key={n} href={`#${navigationSections[i]}`} onClick={()=>setOpen(false)}>{n}<ArrowRight size={16}/></a>)}<ConsultButton locale={locale} className="button secondary mobile-contact" onClick={()=>setOpen(false)}>{d.want}</ConsultButton></nav>}</div>}
-export function LegalLink({locale,kind}:{locale:Locale;kind:'privacy'|'cookies'|'legal'}){const c=content[locale];const url={privacy:config.privacyUrl,cookies:config.cookieUrl,legal:config.legalUrl}[kind];return url?<a href={url}>{c[kind]}</a>:<button onClick={()=>window.dispatchEvent(new CustomEvent('open-legal',{detail:kind}))}>{c[kind]}</button>}
+export function LegalLink({locale,kind}:{locale:Locale;kind:'privacy'|'cookies'|'legal'}){return <a href={`/${locale}/${kind}/`}>{content[locale][kind]}</a>}
 export function PreferencesButton({locale}:{locale:Locale}){return <button onClick={()=>window.dispatchEvent(new CustomEvent('open-cookies'))}>{content[locale].preferences}</button>}
-export function Interactions({locale}:{locale:Locale}) {
+export function Interactions({locale,salesPage=true}:{locale:Locale;salesPage?:boolean}) {
  const d=dictionaries[locale],c=content[locale];const dialog=useRef<HTMLDialogElement>(null);
- const [modal,setModal]=useState<'cookies'|'privacy'|'legal'|'policy'|null>(null);const [banner,setBanner]=useState(false);const [analytics,setAnalytics]=useState(false);
- useEffect(()=>{try{localStorage.setItem('rooklyn-language',locale);const saved=JSON.parse(localStorage.getItem(consentKey)||'null');setBanner(!saved||Date.now()-saved.timestamp>180*86400000)}catch{setBanner(true)}setAnalytics(hasConsent());enableTracking();track('hvac_sales_page_viewed',locale);
+ const [modal,setModal]=useState<'cookies'|'privacy'|'legal'|'policy'|null>(null);const [banner,setBanner]=useState(false);const [footerVisible,setFooterVisible]=useState(false);const [analytics,setAnalytics]=useState(false);
+ useEffect(()=>{try{localStorage.setItem('rooklyn-language',locale);const saved=JSON.parse(localStorage.getItem(consentKey)||'null');setBanner(!saved||Date.now()-saved.timestamp>180*86400000)}catch{setBanner(true)}setAnalytics(hasConsent());enableTracking();if(salesPage)track('hvac_sales_page_viewed',locale);
  const cookies=()=>{setAnalytics(hasConsent());setModal('cookies')};const legal=(event:Event)=>{const kind=(event as CustomEvent).detail;setModal(kind==='cookies'?'policy':kind)};
  window.addEventListener('open-cookies',cookies);window.addEventListener('open-legal',legal);
  const target=document.getElementById('impact');let viewed=false;const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)&&!viewed){viewed=true;track('hvac_business_case_viewed',locale)}},{threshold:.2});if(target)observer.observe(target);
  return()=>{window.removeEventListener('open-cookies',cookies);window.removeEventListener('open-legal',legal);observer.disconnect()};
- },[locale]);
+ },[locale,salesPage]);
+ useEffect(()=>{const footer=document.querySelector('footer');if(!footer||!('IntersectionObserver' in window))return;const observer=new IntersectionObserver(entries=>setFooterVisible(entries.some(entry=>entry.isIntersecting)));observer.observe(footer);return()=>observer.disconnect()},[]);
  useEffect(()=>{document.body.dataset.cookieBanner=String(banner);return()=>{delete document.body.dataset.cookieBanner}},[banner]);
  useEffect(()=>{if(modal){dialog.current?.showModal();document.body.style.overflow='hidden'}else{dialog.current?.close();document.body.style.overflow=''}return()=>{document.body.style.overflow=''}},[modal]);
- function saveConsent(value:boolean){const was=hasConsent();try{localStorage.setItem(consentKey,JSON.stringify({analytics:value,timestamp:Date.now()}))}catch{}setBanner(false);setModal(null);setAnalytics(value);if(value){enableTracking();if(!was)track('hvac_sales_page_viewed',locale)}else{disableTracking();if(was&&trackingConfig.scriptUrl)window.location.reload()}}
+ function saveConsent(value:boolean){const was=hasConsent();try{localStorage.setItem(consentKey,JSON.stringify({analytics:value,timestamp:Date.now()}))}catch{}setBanner(false);setModal(null);setAnalytics(value);if(value){enableTracking();if(!was&&salesPage)track('hvac_sales_page_viewed',locale)}else{disableTracking();if(was&&trackingConfig.scriptUrl)window.location.reload()}}
  return <>{banner&&<aside className="cookie-banner" aria-label={c.cookieTitle}><div className="cookie-copy"><ShieldCheck size={22}/><div><strong>{c.cookieTitle}</strong><p>{c.cookieText} <LegalLink locale={locale} kind="cookies"/></p></div></div><div className="cookie-actions"><button onClick={()=>saveConsent(false)}>{c.reject}</button><button onClick={()=>saveConsent(true)}>{c.accept}</button><button className="cookie-config" onClick={()=>setModal('cookies')}>{c.customize}</button></div></aside>}
- <div className="mobile-sticky"><DemoLink locale={locale}>{d.demoCta}</DemoLink></div>
+ {salesPage&&<div className="mobile-sticky" hidden={footerVisible}><DemoLink locale={locale}>{d.demoCta}</DemoLink></div>}
  <dialog ref={dialog} className="modal" aria-labelledby="modal-title" onCancel={()=>setModal(null)} onClick={e=>{if(e.target===dialog.current){const r=dialog.current.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)setModal(null)}}}>
  <button className="modal-close icon-button" aria-label={d.close} onClick={()=>setModal(null)}><X size={22}/></button>
  {modal==='cookies'?<><span className="modal-symbol"><ShieldCheck size={25}/></span><h2 id="modal-title">{c.cookieTitle}</h2><p>{c.cookieText}</p><div className="preference-row"><div><strong>{c.essential}</strong><p>{c.essentialDesc}</p></div><span>{c.always}</span></div><label className="preference-row"><div><strong>{c.analytics}</strong><p>{c.analyticsDesc}</p></div><input type="checkbox" checked={analytics} onChange={e=>setAnalytics(e.target.checked)}/></label><button className="button teal-button" onClick={()=>saveConsent(analytics)}>{c.save}</button></>:<><span className="modal-symbol"><ShieldCheck size={25}/></span><h2 id="modal-title">{modal==='privacy'?c.privacy:modal==='policy'?c.cookies:c.legal}</h2><p>{c.legalPending}</p><button className="button teal-button" onClick={()=>setModal(null)}>{d.close}</button></>}

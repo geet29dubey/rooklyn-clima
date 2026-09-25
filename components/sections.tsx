@@ -41,7 +41,7 @@ export function Sections({locale}:{locale:Locale}) {
   </>;
 }
 
-export function Footer({locale}:{locale:Locale}) {
+export function Footer({locale,salesPage=true}:{locale:Locale;salesPage?:boolean}) {
   const c=content[locale];
-  return <><footer><div className="container"><div className="footer-top"><div><a href={`/${locale}/`} aria-label="Rooklyn"><Logo/></a><p>{c.footerTag}</p>{config.contactEmail&&<a className="contact-email" href={`mailto:${config.contactEmail}`}>{config.contactEmail}</a>}</div><div className="footer-links"><LegalLink locale={locale} kind="privacy"/><LegalLink locale={locale} kind="cookies"/><LegalLink locale={locale} kind="legal"/><PreferencesButton locale={locale}/></div><LanguageSelector locale={locale}/></div><div className="footer-bottom"><span>© {new Date().getFullYear()} {c.rights}</span><p>{c.disclaimer}</p></div></div></footer><Interactions locale={locale}/></>;
+  return <><footer><div className="container"><div className="footer-top"><div><a href={`/${locale}/`} aria-label="Rooklyn"><Logo/></a><p>{c.footerTag}</p>{config.contactEmail&&<a className="contact-email" href={`mailto:${config.contactEmail}`}>{config.contactEmail}</a>}</div><div className="footer-links"><LegalLink locale={locale} kind="privacy"/><LegalLink locale={locale} kind="cookies"/><LegalLink locale={locale} kind="legal"/><PreferencesButton locale={locale}/></div><LanguageSelector locale={locale}/></div><div className="footer-bottom"><span>© {new Date().getFullYear()} {c.rights}</span><p>{c.disclaimer}</p></div></div></footer><Interactions locale={locale} salesPage={salesPage}/></>;
 }
