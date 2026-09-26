@@ -211,6 +211,7 @@ footer{padding-block:32px 24px}
 
 @media(min-width:1200px){
  .contact-grid{grid-template-columns:minmax(300px,.65fr) minmax(760px,1.35fr);gap:clamp(36px,3vw,48px)}
+ .contact-copy{align-self:start}
  .contact-form-card{padding:24px;justify-self:end}
 }
 
