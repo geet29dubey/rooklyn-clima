@@ -1,6 +1,24 @@
 import { defineConfig } from "vite";
 import vinext from "vinext";
 import { cloudflare } from "@cloudflare/vite-plugin";
+
+export default defineConfig({
+  plugins: [
+    vinext(),
+    cloudflare({
+      viteEnvironment: {
+        name: "rsc",
+        childEnvironments: ["ssr"],
+      },
+    }),
+  ],
+});
+
+
+
+/* import { defineConfig } from "vite";
+import vinext from "vinext";
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { responseStoreAdapter } from "@vinext/cloudflare/cache/response-store-adapter";
 import { imagesOptimizer } from "@vinext/cloudflare/images/images-optimizer";
 
@@ -18,3 +36,4 @@ export default defineConfig({
     }),
   ],
 });
+ */
