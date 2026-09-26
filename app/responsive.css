@@ -129,8 +129,12 @@ footer{padding-block:32px 24px}
 
 /* Second compaction pass: preserve navigation and provider-owned form sizing. */
 .hero,.section,.audience-section,footer{height:auto;min-height:0}
+.contact-grid{grid-template-columns:minmax(0,1fr);gap:28px;align-items:center}
 .contact-copy{padding-top:0;align-self:center}
-.contact-form-card{padding:8px}
+.contact-form-card{width:100%;max-width:940px;min-width:0;padding:8px;justify-self:center}
+.contact-embed,.contact-embed .ep-inline{width:100%;max-width:none;min-width:0}
+/* Size the cross-origin iframe viewport only; GHL owns its internal field layout. */
+.contact-form-card iframe{display:block;width:100%!important;max-width:none!important}
 .contact-copy .section-lead{margin-block:18px 22px;max-width:520px}
 .contact-copy .button{min-height:50px;padding-block:11px}
 .contact-form-card .form-fallback{margin:8px;font-size:14px;line-height:1.5}
@@ -152,7 +156,6 @@ footer{padding-block:32px 24px}
 @media(min-width:768px) and (max-width:1023px){
  .contact-grid{grid-template-columns:minmax(0,1fr);gap:28px}
  .contact-copy{max-width:680px}.contact-copy .cta-row{flex-direction:row}
- .contact-form-card{width:100%;max-width:720px;justify-self:center}
  .four-stage-process{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:20px}
  .four-stage-process h3{margin:0}
  .four-stage-process>li:nth-child(2):after{display:none}
@@ -197,7 +200,6 @@ footer{padding-block:32px 24px}
  .hero .lifecycle-tail{margin-top:10px}
  .hero .journey-footer{padding:8px 15px}
  .contact-section{padding-block:60px}
- .contact-grid{grid-template-columns:minmax(0,.76fr) minmax(0,1fr);gap:clamp(32px,3vw,48px);align-items:center}
  .contact-copy h2{font-size:clamp(40px,3.2vw,48px);line-height:1.12}
  .contact-copy .section-lead{font-size:18px;line-height:1.6}
  footer{padding-block:32px 22px}
@@ -205,6 +207,11 @@ footer{padding-block:32px 24px}
  .footer-top p{margin-top:6px;line-height:1.4}
  .footer-links{grid-template-columns:repeat(4,auto);gap:16px}
  .footer-bottom{margin-top:12px;padding-top:12px}
+}
+
+@media(min-width:1200px){
+ .contact-grid{grid-template-columns:minmax(300px,.65fr) minmax(760px,1.35fr);gap:clamp(36px,3vw,48px)}
+ .contact-form-card{padding:24px;justify-self:end}
 }
 
 @media(min-width:1024px) and (max-height:850px){
